@@ -13,6 +13,7 @@ const argv = yargs.argv;
 var command = argv._[0];
 //using the yarg module that yields an object with the commands etc.  the argv is the variable that holds the yargs.argv method that we can now use and we are grabbing the command that is entered in the command prompt which shows up in the object created by yarg in the 0 index place.
 
+
 console.log('command: ', command);
 console.log('Yargs', argv);
 
