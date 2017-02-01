@@ -1,4 +1,3 @@
-
 console.log('Starting app'); 
 
 const fs = require('fs');
@@ -18,16 +17,44 @@ console.log('command: ', command);
 console.log('Yargs', argv);
 
 if (command === 'add'){
-	notes.addNote(argv.title, argv.body);
+	var note = notes.addNote(argv.title, argv.body);
 	// notes is the module; addNote is a method
 	//argv is the object and title is a key within the object
+	if (note) {
+	//we want to check if an obj was created so the if stmt will just contain the obj name as a parameter, no condition stmt necessary
+		console.log("note created");
+		notes.logNote(note);
+		//you use note.title and note.body because the parameter represents the note object we are passing through.  You are accessing the title and body attributes on the note object.
+		//ES6 syntax: (`Title: ${note.title}`);
+	} else {
+		
+		console.log("note title taken");
+	};
+
 } else if (command === 'list') {
-	notes.getAll();
-	//doesn't take any arguments bc it returns all notes regardless of title
+	var allNotes = notes.getAll();
+	console.log(`Printing ${allNotes.length} note(s).`);
+	//the `` are called template strings
+	//this is equal to the return value of getAll
+	//doesn't take any arguments bc it returns all notes regardless of titles
+	allNotes.forEach((note) => notes.logNote(note));
+	//this prints each note by calling logNote once for every item in the array.  We do this by calling a callback function for each item in the array.  We simplify allNotes.forEach((note) => {notes.logNote(note);}); by writing ES6 as shown above
 } else if (command === 'read') {
-	notes.getNote(argv.title);
+	var note = notes.getNote(argv.title);
+	//note stores the result of the running of the getNote fcn (with the argv.title parameter) over in notes.js
+	if (note) {
+		console.log("note read")
+	} else {
+		console.log("note not read")
+	};
+
 } else if (command === 'remove') {
-	notes.removeNote();
+	var noteRemoved = notes.removeNote(argv.title);
+	//this will either return true or false bc of the return in removeNote found in notes.js
+	//remember that we are using Yargs here, and yargs uses an object... we are telling Yargs what want, basically filling in the places in the command prompt.  Command = argv_[0]; we use argv.title as the parameter because that is how we tell Yargs what we want for a title.
+	var message = noteRemoved ? 'Note was removed' : 'Note not found';
+	//the terinary operator lets you specify a condition.  In this case we're using the condition noteRemoved (which will be true if a note was removed, false if it wasn't). After the condition we put a space with a question mark...this is the statement that will run if it is true (the truthy expression).  If it is false (the falsy expression) we specify that condition after the colon mark.
+	console.log(message);
 } else {
 	console.log('command not recognized');
 }
