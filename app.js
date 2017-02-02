@@ -2,38 +2,33 @@ const fs = require('fs');
 const _ = require('lodash');
 const yargs = require('yargs');
 const notes = require('./notes.js');
+const titleOptions =  {
+		describe: 'title of note',
+		//this describes what gets passed in for the title of the note
+		demand: true,
+		//the tells yargs whether or not this argument is required.  it is false by default
+		alias: 't'
+		//lets you provide a shortcut so you dont have to type --title, you can set it to a single character, like t.
+	};
+const bodyOptions = {
+		describe: 'Body of note' ,
+		demand: true, 
+		alias: 'b'
+	};
 
 const argv = yargs
 	//this is the setup for the add command (name, description, actions required)
 	.command('add', 'add a new note', {
-		title: {
-			describe: 'title of note',
-			//this describes what gets passed in for the title of the note
-			demand: true,
-			//the tells yargs whether or not this argument is required.  it is false by default
-			alias: 't'
-			//lets you provide a shortcut so you dont have to type --title, you can set it to a single character, like t.
-		},
-		body: {
-			describe: 'Body of note' ,
-			demand: true, 
-			alias: 'b'
-		}
+		title: titleOptions,
+		body: bodyOptions
 	})
+	//this is an options object
 	.command('list', 'list all notes')
 	.command('read', 'read a note', {
-		title: {
-			describe: 'title of note',
-			demand: true,
-			alias: 't'
-		},
+		title: titleOptions,
 	})
 	.command('remove', 'remove a note', {
-		title: {
-			describe: 'title of note',
-			demand: true,
-			alias: 't'
-		},
+		title: titleOptions,
 	})
 	.help()
 	//we are making a help call.  this is a method so we're going to call it as a function and dont need to pass in any arguments.  the purpose of the help call is to set up yargs to return some useful info when someone runs the program 
